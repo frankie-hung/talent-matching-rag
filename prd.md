@@ -2,7 +2,7 @@
 
 **Document language:** English  
 **Product UI language:** English  
-**Stack:** Python, Streamlit, Chroma, OpenAI or DeepSeek API
+**Stack:** Python, Streamlit, Chroma, DeepSeek API (OpenAI-compatible; default LLM)
 
 ---
 
@@ -127,9 +127,9 @@ Thin custom RAG preferred (clarity for demos) over heavy frameworks.
 | Language | **Python** |
 | Vector DB | **Chroma** |
 | Grounding | **Required** on ranked results |
-| Default LLM | OpenAI or DeepSeek via env |
+| Default LLM | **DeepSeek** via `.env` (`DEEPSEEK_API_KEY`; OpenAI-compatible client). Optional `DEEPSEEK_BASE_URL` and model name. |
 
-Still open: primary provider for demo day; MD-only vs +PDF; offline mock required?
+Still open: MD-only vs +PDF; offline mock required?
 
 ---
 
