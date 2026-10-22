@@ -1,0 +1,40 @@
+{
+  "description": "Synthetic golden labels for hit@k. A hit at k means the top k ranked candidate_ids include at least one id in expected_candidate_ids. Order is best-first and is not required for the hit. partial_candidate_ids are near-misses and are not required.",
+  "queries": [
+    {
+      "query_id": "q-ai-ml",
+      "job_id": "job-ai-ml",
+      "query": "Hong Kong hybrid AI engineer who trains models in PyTorch or TensorFlow, writes SQL, and has shipped a production scorer or a retrieval assistant that cites source passages.",
+      "expected_candidate_ids": ["cand-ml-01", "cand-ml-02", "cand-ml-04"],
+      "partial_candidate_ids": ["cand-ml-03"]
+    },
+    {
+      "query_id": "q-data-analyst",
+      "job_id": "job-data-analyst",
+      "query": "Hong Kong data analyst who writes SQL, builds Tableau or Power BI dashboards, reconciles metrics to a business total, and explains the result to non-analysts.",
+      "expected_candidate_ids": ["cand-da-01", "cand-da-02", "cand-da-03"],
+      "partial_candidate_ids": ["cand-da-04", "cand-ml-03"]
+    },
+    {
+      "query_id": "q-product-manager",
+      "job_id": "job-product-manager",
+      "query": "Product manager with at least four years owning discovery, roadmap choices, and post-launch metrics for B2B or payments software, not a program manager coordinating a vendor plan.",
+      "expected_candidate_ids": ["cand-pm-01", "cand-pm-02"],
+      "partial_candidate_ids": ["cand-pm-03"]
+    },
+    {
+      "query_id": "q-hrbp",
+      "job_id": "job-hrbp",
+      "query": "Hong Kong HR business partner who coaches managers, runs employee-relations cases, and advises on local employment practice. Recruiting-only profiles are not enough.",
+      "expected_candidate_ids": ["cand-hr-01", "cand-hr-02"],
+      "partial_candidate_ids": ["cand-hr-04"]
+    },
+    {
+      "query_id": "q-it-support",
+      "job_id": "job-it-support",
+      "query": "Hong Kong IT support or systems administrator for Microsoft 365, endpoint builds, identity joiner-mover-leaver, and first-line network faults, with clear ticket updates.",
+      "expected_candidate_ids": ["cand-it-01", "cand-it-02"],
+      "partial_candidate_ids": ["cand-it-03"]
+    }
+  ]
+}

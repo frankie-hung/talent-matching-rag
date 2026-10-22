@@ -10,6 +10,16 @@ Ranked results must include **grounding**: each candidate shows the source CV pa
 
 **DeepSeek** is the default LLM provider for this demo (OpenAI-compatible API). Implementation of the app is forthcoming.
 
+## Seed data
+
+Synthetic jobs and résumés live in [`data/`](data/README.md). Nothing in that folder is a real person or a real employer.
+
+- Five openings: `data/jobs/*.md` (`job_id`, title, location, years, must-have skills, and a full description).
+- 24 résumés: `data/cvs/*.md` (frontmatter `candidate_id`, `name`, `years_exp`, `location`, plus Summary, Experience, Skills, and Education). The pool mixes strong fits, partial fits, and poor fits.
+- Optional eval labels: `data/golden.json` maps five queries to expected `candidate_id`s for a later hit@3 / hit@5 check.
+
+When the app exists, `python -m app.ingest` loads `data/jobs` and `data/cvs` into Chroma. Do not put API keys in these files.
+
 ## Installation / Setup
 
 ### 1. Clone and install
