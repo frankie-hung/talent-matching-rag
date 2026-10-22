@@ -129,19 +129,19 @@ Thin custom RAG preferred (clarity for demos) over heavy frameworks.
 | Grounding | **Required** on ranked results |
 | Default LLM | **DeepSeek** via `.env` (`DEEPSEEK_API_KEY`; OpenAI-compatible client). Optional `DEEPSEEK_BASE_URL` and model name. |
 
-Still open: MD-only vs +PDF; offline mock required?
+Resolved in the MVP: CV files may be Markdown, text, or PDF (text extraction). Offline mock ranking runs when `DEEPSEEK_API_KEY` is unset. Embeddings are local MiniLM, not a DeepSeek or OpenAI embedding API.
 
 ---
 
 ## 11. Acceptance checklist
 
 - [ ] PRD agreed  
-- [ ] Seed jobs + synthetic CVs  
-- [ ] Ingest + Chroma works  
-- [ ] Portal returns ranked matches with **grounding**  
-- [ ] README + demo script  
-- [ ] Optional eval hit@k  
-- [ ] No real PII; API key via `.env`
+- [x] Seed jobs + synthetic CVs  
+- [x] Ingest + Chroma works  
+- [x] Portal returns ranked matches with **grounding**  
+- [x] README + demo script  
+- [x] Optional eval hit@k  
+- [x] No real PII; API key via `.env`
 
 ---
 

@@ -3,3 +3,5 @@ chromadb
 openai
 httpx
 python-dotenv
+pyyaml
+pypdf

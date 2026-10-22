@@ -2,12 +2,12 @@
 
 Synthetic demo data only. Names, employers, and openings are fictional. Do not add real résumés, real employee records, or live API keys.
 
-Ingest (when `app/` exists) reads:
+`python -m app.ingest` reads:
 
 - Jobs: `data/jobs/*.md`
-- CVs: `data/cvs/*.md`
+- CVs: `data/cvs/*.{md,txt,pdf}`
 
-`python -m app.ingest` rebuilds the Chroma index from these files. Ranked matches must still show **grounding** (the CV passage and section that support the claim).
+That command rebuilds the Chroma index from these files. Ranked matches must still show **grounding** (the CV passage and section that support the claim).
 
 ## Jobs
 

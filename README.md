@@ -2,59 +2,64 @@
 
 Demo portal for matching job openings to synthetic résumés with retrieval-augmented generation.
 
-**Stack:** Python, Streamlit, and Chroma.
+**Stack:** Python, Streamlit, and Chroma. **DeepSeek** is the default chat model when `DEEPSEEK_API_KEY` is set. Embeddings stay on the machine (`sentence-transformers/all-MiniLM-L6-v2` via ONNX). DeepSeek does not serve that embedding model, and this demo does not call OpenAI.
 
-Product requirements are in [`prd.md`](prd.md).
+Product requirements are in [`prd.md`](prd.md). A presenter script is in [`docs/DEMO.md`](docs/DEMO.md).
 
-Ranked results must include **grounding**: each candidate shows the source CV passages (chunk text and section) that support the match.
+Ranked results must include **grounding**: each candidate shows the source CV passage, the section, and the file path. The quoted text is copied from the résumé, not written by the model.
 
-**DeepSeek** is the default LLM provider for this demo (OpenAI-compatible API). Implementation of the app is forthcoming.
+Without an API key the app still runs. It retrieves by vectors and fills “Why this match?” with a heuristic that points at those passages. Mock mode does not invent skill gaps.
 
-## Seed data
+## Run
 
-Synthetic jobs and résumés live in [`data/`](data/README.md). Nothing in that folder is a real person or a real employer.
-
-- Five openings: `data/jobs/*.md` (`job_id`, title, location, years, must-have skills, and a full description).
-- 24 résumés: `data/cvs/*.md` (frontmatter `candidate_id`, `name`, `years_exp`, `location`, plus Summary, Experience, Skills, and Education). The pool mixes strong fits, partial fits, and poor fits.
-- Optional eval labels: `data/golden.json` maps five queries to expected `candidate_id`s for a later hit@3 / hit@5 check.
-
-When the app exists, `python -m app.ingest` loads `data/jobs` and `data/cvs` into Chroma. Do not put API keys in these files.
-
-## Installation / Setup
-
-### 1. Clone and install
-
-Requires Python 3.11+.
+Python 3.11+. From the repo root:
 
 ```bash
-git clone https://github.com/frankie-hung/talent-matching-rag.git
-cd talent-matching-rag
 python3.11 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-```
-
-On Windows, activate with `.venv\Scripts\activate`.
-
-`requirements.txt` is a minimal stub (`streamlit`, `chromadb`, the OpenAI-compatible client, and `httpx`) until the app is built.
-
-### 2. Configure the API key
-
-```bash
 cp .env.example .env
-```
-
-Edit `.env` and set `DEEPSEEK_API_KEY`. `DEEPSEEK_BASE_URL` and the model name are optional; the example file has DeepSeek defaults.
-
-Never commit `.env`. Only `.env.example` belongs in git.
-
-### 3. Run (when the app exists)
-
-These commands are placeholders until `app/` is implemented:
-
-```bash
 python -m app.ingest
 streamlit run app/ui.py
 ```
 
-Ingest rebuilds the Chroma index from seed jobs and CVs. The Streamlit UI then ranks matches. Every ranked candidate must show grounding (source CV passages).
+On Windows, activate with `.venv\Scripts\activate`.
+
+Then open the URL Streamlit prints (usually http://localhost:8501). Pick an opening, leave the paste box empty, and press **Find matches**. The detail pane has **Why this match?** and **Sources / Grounding**. **Show retrieved chunks** lists every passage retrieved for that person. The footer shows the chat model, the embedding model, and embed / retrieve / LLM latency.
+
+`python -m app.ingest` rebuilds Chroma from `data/jobs` and `data/cvs`. The first run downloads the MiniLM ONNX weights (about 80 MB) into the user cache. Later runs reuse them. The index lives in `.chroma/`, which is gitignored.
+
+Leave `DEEPSEEK_API_KEY` blank to stay in mock mode. To use DeepSeek later, put the key only in `.env` and restart Streamlit. Optional settings: `DEEPSEEK_BASE_URL` (default `https://api.deepseek.com`) and `DEEPSEEK_MODEL` (default `deepseek-chat`). Never commit `.env`.
+
+A terminal shortlist, still mocked, without starting the UI:
+
+```bash
+python -m app.match --job job-ai-ml --mock
+```
+
+Hit@3 / hit@5 against `data/golden.json`, plus a keyword-overlap baseline on the same job text:
+
+```bash
+python eval.py --mock
+```
+
+A hit means at least one labelled candidate id appears in the top k.
+
+## Seed data
+
+Synthetic only. Details and the fit matrix are in [`data/README.md`](data/README.md).
+
+- Five openings in `data/jobs/*.md`
+- 24 résumés in `data/cvs/*.md` (Markdown, plus `.txt` and `.pdf` if you add them)
+- `data/golden.json` for the eval labels
+
+## Keyword overlap and vector retrieval
+
+On this toy set both methods record hit@5 = 1.0 for the five labelled openings: at least one expected person is in the top five. They miss in different ways.
+
+- Paste `HR Hong Kong` and search. A token overlap that drops two-letter words never sees “HR”, so Hong Kong analysts outrank the HR business partners. Vector retrieval starts with Fiona Leung (`cand-hr-01`). Her grounding quotes are employee-relations work, not a dashboard.
+- Select **Data Analyst**. Keyword overlap on the full description keeps the four analysts ahead of the accountant. Vector retrieval can still surface Samuel Adeyemi (`cand-xx-03`) because “reporting” and a management pack sit near analyst language. His **Sources / Grounding** panel is ledger commentary, not SQL or Tableau. That gap is why the passage is on the card.
+
+## What the screen does
+
+The sidebar is the job selector, an optional pasted description, years and location filters, top N, and the chunk toggle. Results are the shortlist. Candidate detail is the claim, the gaps, and the source passages. Filters report how many retrieved people were removed. Claims are only as good as the quote underneath them.
