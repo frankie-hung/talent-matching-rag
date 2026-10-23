@@ -1,5 +1,6 @@
 streamlit
 chromadb
+fastembed
 openai
 httpx
 python-dotenv

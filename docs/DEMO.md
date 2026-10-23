@@ -16,7 +16,7 @@ If `.env` has no `DEEPSEEK_API_KEY`, say so: retrieval is real, the written “w
 
 Hiring teams drown in CVs. Keyword search misses paraphrases (“retrieval assistant” versus “RAG”) and over-ranks lookalikes (an accountant who “reports”, a recruiter filed under HR).
 
-Point at the pipeline: jobs and CVs in `data/` are chunked by section, embedded locally with MiniLM, stored in Chroma, then grouped back to a person. The model may explain. The passage on screen is copied from the file.
+Point at the pipeline: jobs and CVs in `data/` are chunked by section, embedded locally with `BAAI/bge-base-en-v1.5`, stored in Chroma, then grouped back to a person. The model may explain. The passage on screen is copied from the file.
 
 ## 2. Why retrieval instead of a fine-tune
 
