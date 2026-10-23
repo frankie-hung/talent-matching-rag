@@ -35,6 +35,20 @@
       "query": "Hong Kong IT support or systems administrator for Microsoft 365, endpoint builds, identity joiner-mover-leaver, and first-line network faults, with clear ticket updates.",
       "expected_candidate_ids": ["cand-it-01", "cand-it-02"],
       "partial_candidate_ids": ["cand-it-03"]
+    },
+    {
+      "query_id": "q-backend",
+      "job_id": "job-backend",
+      "query": "Hong Kong backend engineer with Go or Java, PostgreSQL or MySQL, HTTP APIs, idempotent writes, automated tests, and production on-call for a service they shipped.",
+      "expected_candidate_ids": ["cand-se-01", "cand-se-02", "cand-se-03", "cand-se-17"],
+      "partial_candidate_ids": ["cand-se-05", "cand-se-12", "cand-se-14"]
+    },
+    {
+      "query_id": "q-devops-sre",
+      "job_id": "job-devops-sre",
+      "query": "Hong Kong DevOps or site reliability engineer for Kubernetes, Terraform, CI/CD, Prometheus or Grafana, and incident response.",
+      "expected_candidate_ids": ["cand-sre-01", "cand-sre-03", "cand-sre-09"],
+      "partial_candidate_ids": ["cand-sre-02", "cand-sre-04", "cand-sre-10"]
     }
   ]
 }

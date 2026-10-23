@@ -357,7 +357,7 @@ def match_candidates(
     min_years: int = 0,
     location_contains: str = "",
     years_required: int | None = None,
-    retrieve_k: int = 48,
+    retrieve_k: int = 120,
     pool_size: int = 8,
     query_label: str = "",
     query_lead: str | None = None,

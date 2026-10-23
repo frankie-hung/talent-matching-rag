@@ -29,6 +29,7 @@ The corpus is a few dozen synthetic résumés and it changes whenever someone dr
 3. Turn on **Show retrieved chunks** and show that the panel can list every passage retrieved for that person, not only the ones cited.
 4. Optional filter: type `Hong Kong` into **Location contains** and search again. People whose location line does not mention Hong Kong drop out, and the caption reports how many were filtered out. Clear the box before the next search.
 5. Paste a one-paragraph description of a payments product manager over the Product Manager opening and search again, so the audience sees match-by-text as well as match-by-opening.
+6. If you want the larger IT pool, switch to **Backend Software Engineer** or **DevOps / Site Reliability Engineer**. The shortlist should cite Go or Java services, or Kubernetes and Terraform, from `data/cvs/`.
 
 ## 4. Limits
 
