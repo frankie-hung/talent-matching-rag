@@ -129,7 +129,7 @@ Thin custom RAG preferred (clarity for demos) over heavy frameworks.
 | Grounding | **Required** on ranked results |
 | Default LLM | **DeepSeek** via `.env` (`DEEPSEEK_API_KEY`; OpenAI-compatible client). Optional `DEEPSEEK_BASE_URL` and model name. |
 
-Resolved in the MVP: CV files may be Markdown, text, or PDF (text extraction). Offline mock ranking runs when `DEEPSEEK_API_KEY` is unset. Embeddings are local MiniLM, not a DeepSeek or OpenAI embedding API.
+Resolved in the MVP: CV files may be Markdown, text, or PDF (text extraction). Offline mock ranking runs when `DEEPSEEK_API_KEY` is unset. Embeddings are local `BAAI/bge-base-en-v1.5` (`EMBEDDING_MODEL`), not a DeepSeek or OpenAI embedding API.
 
 ---
 

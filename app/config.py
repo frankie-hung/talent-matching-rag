@@ -15,13 +15,14 @@ CVS_DIR = ROOT / "data" / "cvs"
 GOLDEN_PATH = ROOT / "data" / "golden.json"
 COLLECTION_NAME = "cvs"
 
-# DeepSeek's public API is chat-only. This demo embeds locally with the same
-# MiniLM checkpoint sentence-transformers publishes, via Chroma's ONNX build,
-# so ingest does not need an OpenAI (or DeepSeek) embedding key.
-EMBEDDING_MODEL_ID = os.getenv(
-    "EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2"
-).strip() or "sentence-transformers/all-MiniLM-L6-v2"
-EMBEDDING_BACKEND = "local ONNX (Chroma ONNXMiniLM_L6_V2)"
+# DeepSeek's public API is chat-only. This demo embeds locally with
+# BAAI/bge-base-en-v1.5 (the sentence-transformers / Hugging Face id) via an
+# ONNX build, so ingest does not need an OpenAI or DeepSeek embedding key.
+DEFAULT_EMBEDDING_MODEL = "BAAI/bge-base-en-v1.5"
+EMBEDDING_MODEL_ID = os.getenv("EMBEDDING_MODEL", DEFAULT_EMBEDDING_MODEL).strip() or (
+    DEFAULT_EMBEDDING_MODEL
+)
+EMBEDDING_BACKEND = "local ONNX (fastembed)"
 
 DEEPSEEK_BASE_URL = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com").strip() or (
     "https://api.deepseek.com"

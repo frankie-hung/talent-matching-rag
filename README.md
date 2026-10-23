@@ -2,7 +2,7 @@
 
 Demo portal for matching job openings to synthetic résumés with retrieval-augmented generation.
 
-**Stack:** Python, Streamlit, and Chroma. **DeepSeek** is the default chat model when `DEEPSEEK_API_KEY` is set. Embeddings stay on the machine (`sentence-transformers/all-MiniLM-L6-v2` via ONNX). DeepSeek does not serve that embedding model, and this demo does not call OpenAI.
+**Stack:** Python, Streamlit, and Chroma. **DeepSeek** is the default chat model when `DEEPSEEK_API_KEY` is set. Embeddings stay on the machine (`BAAI/bge-base-en-v1.5` via ONNX). DeepSeek does not serve that embedding model, and this demo does not call OpenAI.
 
 Product requirements are in [`prd.md`](prd.md). A presenter script is in [`docs/DEMO.md`](docs/DEMO.md).
 
@@ -27,9 +27,17 @@ On Windows, activate with `.venv\Scripts\activate`.
 
 Then open the URL Streamlit prints (usually http://localhost:8501). Pick an opening, leave the paste box empty, and press **Find matches**. The detail pane has **Why this match?** and **Sources / Grounding**. **Show retrieved chunks** lists every passage retrieved for that person. The footer shows the chat model, the embedding model, and embed / retrieve / LLM latency.
 
-`python -m app.ingest` rebuilds Chroma from `data/jobs` and `data/cvs`. The first run downloads the MiniLM ONNX weights (about 80 MB) into the user cache. Later runs reuse them. The index lives in `.chroma/`, which is gitignored.
+`python -m app.ingest` rebuilds Chroma from `data/jobs` and `data/cvs`. The first run downloads the BGE ONNX weights (about 210 MB) into the user cache. Later runs reuse them. The index lives in `.chroma/`, which is gitignored. Re-run ingest after changing the embedding model. An index built with another model will not match.
 
 Leave `DEEPSEEK_API_KEY` blank to stay in mock mode. To use DeepSeek later, put the key only in `.env` and restart Streamlit. Optional settings: `DEEPSEEK_BASE_URL` (default `https://api.deepseek.com`) and `DEEPSEEK_MODEL` (default `deepseek-chat`). Never commit `.env`.
+
+Set the embedding model explicitly on a machine that already has a `.env`:
+
+```bash
+EMBEDDING_MODEL=BAAI/bge-base-en-v1.5
+```
+
+That is the sentence-transformers model id. The app loads it locally. No embedding API key is required.
 
 A terminal shortlist, still mocked, without starting the UI:
 
