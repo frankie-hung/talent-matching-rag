@@ -29,7 +29,7 @@ Then open the URL Streamlit prints (usually http://localhost:8501). Pick an open
 
 `python -m app.ingest` rebuilds Chroma from `data/jobs` and `data/cvs`. The first run downloads the BGE ONNX weights (about 210 MB) into the user cache. Later runs reuse them. The index lives in `.chroma/`, which is gitignored. Re-run ingest after changing the embedding model. An index built with another model will not match.
 
-Leave `DEEPSEEK_API_KEY` blank to stay in mock mode. To use DeepSeek later, put the key only in `.env` and restart Streamlit. Optional settings: `DEEPSEEK_BASE_URL` (default `https://api.deepseek.com`) and `DEEPSEEK_MODEL` (default `deepseek-chat`). Never commit `.env`.
+Leave `DEEPSEEK_API_KEY` blank to stay in mock mode. To use DeepSeek later, put the key only in `.env` and restart Streamlit. Optional settings: `DEEPSEEK_BASE_URL` (default `https://api.deepseek.com`) and `DEEPSEEK_MODEL` (default `deepseek-flash`). Never commit `.env`.
 
 Set the embedding model explicitly on a machine that already has a `.env`:
 

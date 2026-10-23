@@ -27,7 +27,7 @@ EMBEDDING_BACKEND = "local ONNX (fastembed)"
 DEEPSEEK_BASE_URL = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com").strip() or (
     "https://api.deepseek.com"
 )
-DEEPSEEK_MODEL = os.getenv("DEEPSEEK_MODEL", "deepseek-chat").strip() or "deepseek-chat"
+DEEPSEEK_MODEL = os.getenv("DEEPSEEK_MODEL", "deepseek-flash").strip() or "deepseek-flash"
 
 _PLACEHOLDER_KEYS = {
     "",
