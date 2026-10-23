@@ -49,13 +49,13 @@ A hit means at least one labelled candidate id appears in the top k.
 
 Synthetic only. Details and the fit matrix are in [`data/README.md`](data/README.md).
 
-- Five openings in `data/jobs/*.md`
-- 24 résumés in `data/cvs/*.md` (Markdown, plus `.txt` and `.pdf` if you add them)
+- Seven openings in `data/jobs/*.md`
+- 100 résumés in `data/cvs/*.md` (Markdown, plus `.txt` and `.pdf` if you add them). After pulling new CVs, rebuild the index with `python -m app.ingest`.
 - `data/golden.json` for the eval labels
 
 ## Keyword overlap and vector retrieval
 
-On this toy set both methods record hit@5 = 1.0 for the five labelled openings: at least one expected person is in the top five. They miss in different ways.
+On this toy set both methods record hit@5 = 1.0 for the seven labelled openings: at least one expected person is in the top five. They miss in different ways.
 
 - Paste `HR Hong Kong` and search. A token overlap that drops two-letter words never sees “HR”, so Hong Kong analysts outrank the HR business partners. Vector retrieval starts with Fiona Leung (`cand-hr-01`). Her grounding quotes are employee-relations work, not a dashboard.
 - Select **Data Analyst**. Keyword overlap on the full description keeps the four analysts ahead of the accountant. Vector retrieval can still surface Samuel Adeyemi (`cand-xx-03`) because “reporting” and a management pack sit near analyst language. His **Sources / Grounding** panel is ledger commentary, not SQL or Tableau. That gap is why the passage is on the card.

@@ -39,7 +39,7 @@ Hiring teams receive many CVs per opening. Keyword search misses synonyms and tr
 
 ### In scope (MVP)
 
-1. **Seed data:** 3–5 job openings; 15–30 synthetic résumés  
+1. **Seed data:** several job openings and a synthetic résumé pool (the repo currently has 7 openings and 100 CVs, including a large IT cohort)  
 2. **Ingestion:** Markdown (and optional PDF) → chunk → Chroma with metadata (`candidate_id`, fake name, `years_exp`, `location`, section)  
 3. **Streamlit UI:** select/paste JD → optional filters → Find matches → top-N with scores, rationale, **grounding**  
 4. **RAG:** embed query → retrieve k chunks → group by candidate → LLM rerank/explain  

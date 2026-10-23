@@ -18,14 +18,18 @@ That command rebuilds the Chroma index from these files. Ranked matches must sti
 | `job-product-manager` | Product Manager | Hong Kong (hybrid, Sheung Wan) | 4 |
 | `job-hrbp` | HR Business Partner | Hong Kong (on-site, Central) | 5 |
 | `job-it-support` | IT Support / Systems Administrator | Hong Kong (on-site, Tsim Sha Tsui) | 2 |
+| `job-backend` | Backend Software Engineer | Hong Kong (hybrid, Kwun Tong) | 4 |
+| `job-devops-sre` | DevOps / Site Reliability Engineer | Hong Kong (hybrid, Quarry Bay) | 3 |
 
 Each file has YAML frontmatter (`job_id`, `title`, `location`, `years_required`, `must_have_skills`) and a full job description. Wording is paraphrased in the style of a public posting, not copied from a live listing.
 
 ## CVs
 
-24 Markdown résumés. Frontmatter: `candidate_id`, `name`, `years_exp`, `location`. Body sections: Summary, Experience, Skills, Education.
+100 Markdown résumés. Frontmatter: `candidate_id`, `name`, `years_exp`, `location`. Body sections: Summary, Experience, Skills, Education. Re-ingest on a new machine with `python -m app.ingest` so Chroma picks up the full set.
 
 The pool mixes strong fits, partial fits, and poor fits so retrieval can be wrong in interesting ways (for example an accountant who “reports”, a program manager who is not a product manager, a recruiter who is not an HR business partner).
+
+The table below is the original core set. Another 76 files, `cand-se-*`, `cand-sre-*`, `cand-de-*`, `cand-ml-05` through `cand-ml-08`, `cand-sec-*`, `cand-cld-*`, `cand-qa-*`, `cand-ops-*`, `cand-pe-*`, `cand-sol-*`, and `cand-mob-*`, are additional anonymous IT résumés: backend engineering, DevOps and SRE, data engineering, applied ML, security, cloud, QA, IT operations, product engineering, solutions, and mobile. Employers are fictional.
 
 | candidate_id | Name | Years | Location | Best-fit note |
 |--------------|------|-------|----------|----------------|
@@ -56,4 +60,4 @@ The pool mixes strong fits, partial fits, and poor fits so retrieval can be wron
 
 ## Golden set
 
-`data/golden.json` has five queries, one per opening. `expected_candidate_ids` is the relevant set for a later `eval.py` hit@3 / hit@5: a hit means at least one of those ids appears in the top k. Order is best-first, but hit rate treats the list as a set. `partial_candidate_ids` are plausible near-misses and are not required for a hit.
+`data/golden.json` has one query per opening. `expected_candidate_ids` is the relevant set for `eval.py` hit@3 / hit@5: a hit means at least one of those ids appears in the top k. Order is best-first, but hit rate treats the list as a set. `partial_candidate_ids` are plausible near-misses and are not required for a hit.
