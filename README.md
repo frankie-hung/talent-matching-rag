@@ -27,9 +27,9 @@ On Windows, activate with `.venv\Scripts\activate`.
 
 Then open the URL Streamlit prints (usually http://localhost:8501). Pick an opening, leave the paste box empty, and press **Find matches**. The detail pane has three blocks: **Why this match** (a DeepSeek badge when a key is set, otherwise **Mock explanation · No LLM**), **Sources / Grounding** (CV quotes from local retrieval), and, when the toggle is on, **All retrieved chunks** (also local). The footer shows the chat model, the embedding model, and embed / retrieve / LLM latency.
 
-![Result card for AI / ML Engineer, mock mode](docs/result-card.png)
+![Result card for AI / ML Engineer, DeepSeek mode](docs/result-card.png)
 
-*Mock-mode result. Similarity and fit captions sit under the numbers. Why this match is its own block.*
+*Top 10 with a DeepSeek key. Similarity stays local; Fit and Why this match come from DeepSeek.*
 
 `python -m app.ingest` rebuilds Chroma from `data/jobs` and `data/cvs`. The first run downloads the BGE ONNX weights (about 210 MB) into the user cache. Later runs reuse them. The index lives in `.chroma/`, which is gitignored. Re-run ingest after changing the embedding model. An index built with another model will not match.
 
