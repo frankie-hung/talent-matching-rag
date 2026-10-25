@@ -63,10 +63,14 @@ Synthetic only. Details and the fit matrix are in [`data/README.md`](data/README
 
 ## Keyword overlap and vector retrieval
 
-On this toy set both methods record hit@5 = 1.0 for the seven labelled openings: at least one expected person is in the top five. They miss in different ways.
+The demo can rank people in two ways. **Keyword overlap** counts shared words between the job text and each résumé. **Vector retrieval** compares meaning, so similar wording can match even when the exact words differ.
 
-- Paste `HR Hong Kong` and search. A token overlap that drops two-letter words never sees “HR”, so Hong Kong analysts outrank the HR business partners. Vector retrieval starts with Fiona Leung (`cand-hr-01`). Her grounding quotes are employee-relations work, not a dashboard.
-- Select **Data Analyst**. Keyword overlap on the full description keeps the four analysts ahead of the accountant. Vector retrieval can still surface Samuel Adeyemi (`cand-xx-03`) because “reporting” and a management pack sit near analyst language. His **Sources / Grounding** panel is ledger commentary, not SQL or Tableau. That gap is why the passage is on the card.
+`data/golden.json` labels seven openings with the people who should count as a real fit. **hit@5** scores each opening separately: it succeeds when at least one of those expected people appears in the top 5. A score of **1.0** means all seven openings succeeded (7/7). It does not mean every good fit was ranked first.
+
+On this sample, both methods currently score 1.0. They still get there by different mistakes:
+
+- Paste `HR Hong Kong` and search. The keyword method ignores any word of two letters or fewer, so it throws away “HR” and mostly matches “Hong Kong”. Analysts based in Hong Kong then rank above the HR business partners. Vector retrieval still starts with Fiona Leung (`cand-hr-01`). Her **Sources / Grounding** quotes are employee-relations work.
+- Select **Data Analyst**. Keyword overlap on the full job text keeps the four analysts ahead of the accountant. Vector retrieval can still place Samuel Adeyemi (`cand-xx-03`) on the shortlist, because “reporting” and a management pack sit close to analyst language. Open **Sources / Grounding**: the quoted lines are ledger commentary. That is the point of grounding. A near-miss can look like a fit until you read the CV passage the rank came from.
 
 ## What the screen does
 
