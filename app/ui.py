@@ -33,17 +33,49 @@ def _jobs() -> list[Job]:
     return load_jobs()
 
 
-def _render_evidence(candidate: RankedCandidate, chunks: list, heading: str) -> None:
-    st.markdown(f"**{heading}**")
-    if not chunks:
-        st.warning("No source passage was attached. This result is incomplete.")
-        return
-    for evidence in chunks:
-        st.caption(
-            f"{evidence.section} · `{evidence.source_path}` · similarity {evidence.similarity:.2f}"
+def _section(title: str, badge: str) -> None:
+    st.markdown(f"### {title} {badge}")
+
+
+def _render_explanation(candidate: RankedCandidate, mode: str) -> None:
+    if mode == "deepseek":
+        badge = ":violet-badge[DeepSeek · External LLM]"
+        note = (
+            "DeepSeek wrote these strengths and gaps. "
+            "It did not write the CV quotes in Sources / Grounding."
         )
-        st.markdown(evidence.text)
-        st.divider()
+    else:
+        badge = ":gray-badge[Mock explanation · No LLM]"
+        note = (
+            "No API key, so DeepSeek did not run. "
+            "This text is a local heuristic that points at retrieved passages."
+        )
+    with st.container(border=True):
+        _section("Why this match", badge)
+        st.caption(note)
+        for strength in candidate.strengths:
+            st.markdown(f"- {strength}")
+        if candidate.gaps:
+            st.markdown("#### Gaps")
+            for gap in candidate.gaps:
+                st.markdown(f"- {gap}")
+
+
+def _render_evidence(chunks: list, title: str, badge: str, note: str) -> None:
+    with st.container(border=True):
+        _section(title, badge)
+        st.caption(note)
+        if not chunks:
+            st.warning("No source passage was attached. This result is incomplete.")
+            return
+        for index, evidence in enumerate(chunks):
+            st.caption(
+                f"{evidence.section} · `{evidence.source_path}` · "
+                f"local cosine similarity {evidence.similarity:.2f}"
+            )
+            st.markdown(evidence.text)
+            if index < len(chunks) - 1:
+                st.divider()
 
 
 def _footer(result: MatchResult | None) -> None:
@@ -166,6 +198,19 @@ def main() -> None:
     ]
     with list_col:
         st.subheader("Results")
+        if result.mode == "deepseek":
+            st.caption(
+                "Shortlist order uses DeepSeek fit scores. "
+                "Retrieval similarity on each card is local (embeddings / Chroma)."
+            )
+        else:
+            st.caption(
+                "Local retrieval only. Order and fit scores come from embedding similarity, not an LLM."
+            )
+        st.caption(
+            "Fit on each line is overall fit, about 0–100 (higher is better), separate from similarity. "
+            "Years and location are inferred signals from the résumé."
+        )
         selected = st.radio(
             "Shortlist",
             options=list(range(len(result.rankings))),
@@ -182,23 +227,47 @@ def main() -> None:
         st.subheader("Candidate detail")
         st.markdown(f"### {candidate.name}")
         st.caption(
-            f"`{candidate.candidate_id}` · {candidate.years_exp} years · {candidate.location} · "
-            f"retrieval similarity {candidate.retrieval_similarity:.2f}"
+            f"`{candidate.candidate_id}` · {candidate.years_exp} years · {candidate.location}. "
+            "Years and location are inferred signals from the résumé."
         )
-        st.markdown("**Why this match?**")
-        for strength in candidate.strengths:
-            st.markdown(f"- {strength}")
-        if candidate.gaps:
-            st.markdown("**Gaps**")
-            for gap in candidate.gaps:
-                st.markdown(f"- {gap}")
-        st.caption("Check each claim against the source passages. The quoted text is copied from the CV, not written by the model.")
-        _render_evidence(candidate, candidate.evidence, "Sources / Grounding")
+        sim_col, fit_col = st.columns(2)
+        sim_col.metric(
+            "Retrieval similarity",
+            f"{candidate.retrieval_similarity:.2f}",
+            border=True,
+            help=(
+                "Cosine similarity, not cosine distance. About 0–1. "
+                "Higher is a closer match. About 0.75+ is a strong match."
+            ),
+        )
+        sim_col.caption(
+            "Cosine similarity, not distance. About 0–1; higher is closer. ~0.75+ is strong."
+        )
+        fit_col.metric(
+            "Fit",
+            candidate.fit_score,
+            border=True,
+            help="Overall fit, about 0–100. Higher is a better fit. Separate from similarity.",
+        )
+        fit_col.caption("Overall fit, about 0–100. Higher is better. Separate from similarity.")
+        st.markdown(":green-badge[Local retrieval]")
+        if result.mode == "deepseek":
+            st.caption("Similarity is the local embedding match. Fit is DeepSeek’s overall score.")
+        else:
+            st.caption("Similarity is the local embedding match. No LLM ran.")
+        _render_explanation(candidate, result.mode)
+        _render_evidence(
+            candidate.evidence,
+            "Sources / Grounding",
+            ":green-badge[Local · CV text]",
+            "Quoted text is copied from the résumé. The model does not write these passages.",
+        )
         if show_chunks:
             _render_evidence(
-                candidate,
                 candidate.retrieved_chunks,
                 "All retrieved chunks",
+                ":green-badge[Local retrieval]",
+                "Every passage Chroma returned for this person, before the explanation was written.",
             )
 
     _footer(result)

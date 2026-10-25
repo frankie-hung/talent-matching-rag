@@ -10,7 +10,7 @@ python -m app.ingest
 streamlit run app/ui.py
 ```
 
-If `.env` has no `DEEPSEEK_API_KEY`, say so: retrieval is real, the written “why” is the mock heuristic, and every card still quotes a CV passage. With a key, DeepSeek reranks and the footer shows the chat model and the LLM latency.
+If `.env` has no `DEEPSEEK_API_KEY`, say so: retrieval is real, the written “why” is the mock heuristic (badge **Mock explanation · No LLM**), and every card still quotes a CV passage. With a key, DeepSeek writes the why (badge **DeepSeek · External LLM**) and the footer shows the chat model and the LLM latency. **Sources / Grounding** and **All retrieved chunks** stay labelled as local CV text.
 
 ## 1. Problem and pipeline
 
@@ -25,7 +25,7 @@ The corpus is a few dozen synthetic résumés and it changes whenever someone dr
 ## 3. Live shortlist and grounding
 
 1. Select **AI / ML Engineer**. Leave the paste box empty. Top N stays at 5. Press **Find matches**.
-2. Read the results column, then the detail pane. **Why this match?** is the claim. **Sources / Grounding** is the CV text, the section name, and the path under `data/cvs/`.
+2. Read the results column, then the detail pane. **Why this match** is the claim, with a badge for DeepSeek or for mock / no LLM. **Sources / Grounding** is the CV text, the section name, and the path under `data/cvs/`, labelled local.
 3. Turn on **Show retrieved chunks** and show that the panel can list every passage retrieved for that person, not only the ones cited.
 4. Optional filter: type `Hong Kong` into **Location contains** and search again. People whose location line does not mention Hong Kong drop out, and the caption reports how many were filtered out. Clear the box before the next search.
 5. Paste a one-paragraph description of a payments product manager over the Product Manager opening and search again, so the audience sees match-by-text as well as match-by-opening.

@@ -25,11 +25,11 @@ streamlit run app/ui.py
 
 On Windows, activate with `.venv\Scripts\activate`.
 
-Then open the URL Streamlit prints (usually http://localhost:8501). Pick an opening, leave the paste box empty, and press **Find matches**. The detail pane has **Why this match?** and **Sources / Grounding**. **Show retrieved chunks** lists every passage retrieved for that person. The footer shows the chat model, the embedding model, and embed / retrieve / LLM latency.
+Then open the URL Streamlit prints (usually http://localhost:8501). Pick an opening, leave the paste box empty, and press **Find matches**. The detail pane has three blocks: **Why this match** (a DeepSeek badge when a key is set, otherwise **Mock explanation · No LLM**), **Sources / Grounding** (CV quotes from local retrieval), and, when the toggle is on, **All retrieved chunks** (also local). The footer shows the chat model, the embedding model, and embed / retrieve / LLM latency.
 
 `python -m app.ingest` rebuilds Chroma from `data/jobs` and `data/cvs`. The first run downloads the BGE ONNX weights (about 210 MB) into the user cache. Later runs reuse them. The index lives in `.chroma/`, which is gitignored. Re-run ingest after changing the embedding model. An index built with another model will not match.
 
-Leave `DEEPSEEK_API_KEY` blank to stay in mock mode. To use DeepSeek later, put the key only in `.env` and restart Streamlit. Optional settings: `DEEPSEEK_BASE_URL` (default `https://api.deepseek.com`) and `DEEPSEEK_MODEL` (default `deepseek-flash`). Never commit `.env`.
+Leave `DEEPSEEK_API_KEY` blank to stay in mock mode. To use DeepSeek later, put the key only in `.env` and restart Streamlit. Optional settings: `DEEPSEEK_BASE_URL` (default `https://api.deepseek.com`) and `DEEPSEEK_MODEL` (default `deepseek-chat`, DeepSeek Pro). Never commit `.env`.
 
 Set the embedding model explicitly on a machine that already has a `.env`:
 
